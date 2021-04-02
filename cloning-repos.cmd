@@ -1,12 +1,18 @@
 :: cloning-repos.cmd
 ::
 :: This batch file clones the url repository given by the user
-:: and saves the output to a specific github repository.
+:: and saves the output to github account repository.
 ::----------------------------------------------
 
 @ECHO OFF
 
 @SETLOCAL EnableDelayedExpansion
+
+:: Parameters
+@SET "PERSONAL_ACCESS_TOKEN=<your-github-personal-access-token>"
+@SET "GITHUB_ACCOUNT=<your-organisation-account-name>"
+@SET "USER_NAME=<your-anonymize-username>"
+@SET "AUTHOR=somebody <your-name@your-domain.com>"
 
 :: Check WMIC is available
 @SET currentDate=
@@ -36,9 +42,9 @@ WMIC.EXE Alias /? >NUL 2>&1 || GOTO wmicErrorManager
 :: Start batch
 @GOTO userInput
 
-:: Get consultant repository URL
+:: Get Git repository URL
 :userInput
-@SET /p pathUrl="Veuillez inserer l'URL du depot Git à cloner (HTTPS ou SSH): "
+@SET /p pathUrl="Veuillez inserer l'URL du depot Git a cloner (HTTPS ou SSH): "
 
 :: Clone repository in local drive
 "%~dp0\bin\PortableGit\cmd\git.exe" clone %pathUrl% source
@@ -65,7 +71,7 @@ WMIC.EXE Alias /? >NUL 2>&1 || GOTO wmicErrorManager
 @CALL :getProjectName %pathUrl%
 
 :: Create new repository in github
-"%~dp0\bin\cURL\curl.exe" -i -X POST -H "Authorization: token <your-github-personal-access-token>" -d "{\"name\":\"%currentDate%-%accountRandomValue%-%projectName:~0,-4%\"}" https://api.github.com/orgs/<your-organisation-account-name>/repos
+"%~dp0\bin\cURL\curl.exe" -i -X POST -H "Authorization: token %PERSONAL_ACCESS_TOKEN%" -d "{\"name\":\"%currentDate%-%accountRandomValue%-%projectName:~0,-4%\"}" https://api.github.com/orgs/%GITHUB_ACCOUNT%/repos
 @IF %ERRORLEVEL% GEQ 1 (
     :: Delete all previous treatment
     CALL :deleteClone
@@ -79,15 +85,15 @@ WMIC.EXE Alias /? >NUL 2>&1 || GOTO wmicErrorManager
 :: Init git repository
 "%~dp0\bin\PortableGit\cmd\git.exe" init
 "%~dp0\bin\PortableGit\cmd\git.exe" add .
-"%~dp0\bin\PortableGit\cmd\git.exe" -c user.name="<your-anonymize-username>" commit --author="somebody <your-name@your-domain.com>" -m "Initial commit"
+"%~dp0\bin\PortableGit\cmd\git.exe" -c user.name="%USER_NAME%" commit --author="%AUTHOR%" -m "Initial commit"
 
-:: Push cloned repository to a specific github account
-"%~dp0\bin\PortableGit\cmd\git.exe" remote add origin git@github.com:<your-organisation-account-name>/%currentDate%-%accountRandomValue%-%projectName%
+:: Push cloned repository to github account
+"%~dp0\bin\PortableGit\cmd\git.exe" remote add origin git@github.com:%GITHUB_ACCOUNT%/%currentDate%-%accountRandomValue%-%projectName%
 "%~dp0\bin\PortableGit\cmd\git.exe" -c core.sshCommand="ssh -i ../ssh/id_rsa" push -u --force origin master
 @IF %ERRORLEVEL% GEQ 1 (
     :: Delete all previous treatment
     CALL :deleteClone
-    "%~dp0\bin\cURL\curl.exe" -i -X DELETE -H "Authorization: token <your-github-personal-access-token>" https://api.github.com/repos/<your-organisation-account-name>/%currentDate%-%accountRandomValue%-%projectName:~0,-4%
+    "%~dp0\bin\cURL\curl.exe" -i -X DELETE -H "Authorization: token %PERSONAL_ACCESS_TOKEN%" https://api.github.com/repos/%GITHUB_ACCOUNT%/%currentDate%-%accountRandomValue%-%projectName:~0,-4%
 
     @CLS
     @ECHO Une erreur est survenue lors de l'uplaod du depot vers GitHub
@@ -100,7 +106,7 @@ CALL :deleteClone
 
 :: Display new URL repository
 @CLS
-@ECHO URL a fournir au client : https://github.com/<your-organisation-account-name>/%currentDate%-%accountRandomValue%-%projectName:~0,-4%
+@ECHO URL a fournir au client : https://github.com/%GITHUB_ACCOUNT%/%currentDate%-%accountRandomValue%-%projectName:~0,-4%
 @PAUSE
 @GOTO eof
 
