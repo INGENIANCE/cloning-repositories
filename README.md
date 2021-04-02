@@ -36,7 +36,7 @@ Dans le batch, remplacez l'élément annoté `<your-github-personal-access-token
 
 Le batch duplique le dépôt Git sur un compte d'organisation. Vous pouvez bien entendu faire de même directement sur un compte GitHub, pour celà il suffit de changer les appels REST à l'API GitHub de cette manière :
 
-`https://api.github.com/repos/<your-organisation-account-name>/` -> `https://api.github.com/<user-account>/repos/`
+`https://api.github.com/repos/%GITHUB_ACCOUNT%/` -> `https://api.github.com/%GITHUB_ACCOUNT%/repos/`
 
 Dans tous les cas vous devrez indiquer au batch le nom de l'organisation ou du compte utilisateur dans lequel sera créé le dépôt. Dans notre cas, remplacez `<your-organisation-account-name>` avec le nom de votre organisation associé au compte propriétaire où vous avez généré le token d'accès.
 
@@ -49,9 +49,5 @@ Une fois votre clé générée, copiez la clé privée dans un dossier `ssh` à 
 `"%~dp0\bin\PortableGit\cmd\git.exe" -c core.sshCommand="ssh -i ../ssh/id_rsa" push -u --force origin master`
 
 ## Personnalisation des commits
-
-Sur la ligne suivante :
-
-`"%~dp0\bin\PortableGit\cmd\git.exe" -c user.name="<your-anonymize-username>" commit --author="somebody <your-name@your-domain.com>" -m "Initial commit"`
 
 Pensez à changez les éléments `<your-anonymize-username>` et `somebody <your-name@your-domain.com>` avec des valeurs de votre choix pour personnaliser les commits sur le dépôt GitHub. Attention, pour l'auteur le format doit réellement être `somebody <your-name@your-domain.com>` en conservant les `<>` pour encadrer l'email.
