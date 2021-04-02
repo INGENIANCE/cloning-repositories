@@ -45,3 +45,12 @@ Dernier point important, Git utilise le protocole **SSH** pour autoriser les man
 Une fois votre clé générée, copiez la clé privé dans un dossier `ssh` à la racine du batch et vérifiez que le nom de la clé correspond bien à celui déclaré dans le batch :
 
 `"%~dp0\bin\PortableGit\cmd\git.exe" -c core.sshCommand="ssh -i ../ssh/id_rsa" push -u --force origin master`
+
+## Personalisation des commits
+
+Sur la ligne suivante :
+
+`"%~dp0\bin\PortableGit\cmd\git.exe" -c user.name="<your-anonymize-username>" commit --author="somebody <your-name@your-domain.com>" -m "Initial commit"`
+ 
+Pensez à changez les éléments `<your-anonymize-username>` et `somebody <your-name@your-domain.com>` avec des valeurs de votre choix pour personnaliser les commit sur le dépôt GitHub.
+  
