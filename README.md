@@ -30,7 +30,7 @@ Pour pouvoir créer un nouveau dépôt Git sur GitHub, le batch passe par l'API 
 * Cliquez sur le bouton **Generate token**.
 * Copiez le token présent sur la page. Celui-ci ne sera visible uniquement qu'à cet instant. Si vous veniez à perdre le token, vous devrez en générer un nouveau.
 
-Dans le batch, remplacez l'élément annoté `<your-github-personal-access-token>` avec le token que vous venez de générer.
+Dans le batch, remplacez le contenu de la variable `PERSONAL_ACCESS_TOKEN` annotée `<your-github-personal-access-token>` avec le token que vous venez de générer.
 
 ### Organisation
 
@@ -38,7 +38,7 @@ Le batch duplique le dépôt Git sur un compte d'organisation. Vous pouvez bien 
 
 `https://api.github.com/repos/%GITHUB_ACCOUNT%/` -> `https://api.github.com/%GITHUB_ACCOUNT%/repos/`
 
-Dans tous les cas vous devrez indiquer au batch le nom de l'organisation ou du compte utilisateur dans lequel sera créé le dépôt. Dans notre cas, remplacez `<your-organisation-account-name>` avec le nom de votre organisation associé au compte propriétaire où vous avez généré le token d'accès.
+Dans tous les cas vous devrez indiquer au batch le nom de l'organisation ou du compte utilisateur dans lequel sera créé le dépôt. Dans notre cas, remplacez le contenu de la variable `GITHUB_ACCOUNT` annotée `<your-organisation-account-name>` avec le nom de votre organisation associé au compte propriétaire où vous avez généré le token d'accès.
 
 ### Clé SSH
 
@@ -50,4 +50,10 @@ Une fois votre clé générée, copiez la clé privée dans un dossier `ssh` à 
 
 ## Personnalisation des commits
 
-Pensez à changez les éléments `<your-anonymize-username>` et `somebody <your-name@your-domain.com>` avec des valeurs de votre choix pour personnaliser les commits sur le dépôt GitHub. Attention, pour l'auteur le format doit réellement être `somebody <your-name@your-domain.com>` en conservant les `<>` pour encadrer l'email.
+Pensez à changez les variables `USER_NAME` et `AUTHOR` annotées respecivement par `<your-anonymize-username>` et `somebody <your-name@your-domain.com>` avec des valeurs de votre choix pour personnaliser les commits sur le dépôt GitHub.
+
+Attention, pour l'auteur le format doit réellement être `somebody <your-name@your-domain.com>` en conservant les `<>` pour encadrer l'email.
+
+## Suppression d'un dépôt
+
+Dans le cas où le dépôt cloné n'est plus d'actualité, il est possible de le supprimer facilement en utilisant le batch `delete-repos.cmd`. Vérifiez simplement que les variables `PERSONAL_ACCESS_TOKEN` et `GITHUB_ACCOUNT` soient correctement remplies.
