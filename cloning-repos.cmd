@@ -89,7 +89,7 @@ WMIC.EXE Alias /? >NUL 2>&1 || GOTO wmicErrorManager
 
 :: Push cloned repository to github account
 "%~dp0\bin\PortableGit\cmd\git.exe" remote add origin git@github.com:%GITHUB_ACCOUNT%/%currentDate%-%accountRandomValue%-%projectName%
-"%~dp0\bin\PortableGit\cmd\git.exe" -c core.sshCommand="ssh -i ../ssh/id_rsa" push -u --force origin master
+"%~dp0\bin\PortableGit\cmd\git.exe" -c core.sshCommand="ssh -i ../ssh/id_rsa_consultant" push -u --force origin master
 @IF %ERRORLEVEL% GEQ 1 (
     :: Delete all previous treatment
     CALL :deleteClone
